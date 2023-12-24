@@ -12,6 +12,10 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 		{
 			optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=ShopDb;integrated security=true");
 		}
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<ProductCategory>().HasKey(c => new { c.CategoryId, c.ProductId });
+		}
 		DbSet<Product> Products { get; set; }
 		DbSet<Category> Categories { get; set; }
 	}
