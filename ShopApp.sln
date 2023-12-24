@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.33423.256
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApp.Entities", "ShopApp.Entities\ShopApp.Entities.csproj", "{D71A94C3-829A-457D-89CE-3E6E4E4F125A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.Entities", "ShopApp.Entities\ShopApp.Entities.csproj", "{D71A94C3-829A-457D-89CE-3E6E4E4F125A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApp.DataAccess", "ShopApp.DataAccess\ShopApp.DataAccess.csproj", "{A8CEAD32-5CB1-4656-AAA1-E392249F1E71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D71A94C3-829A-457D-89CE-3E6E4E4F125A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D71A94C3-829A-457D-89CE-3E6E4E4F125A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D71A94C3-829A-457D-89CE-3E6E4E4F125A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8CEAD32-5CB1-4656-AAA1-E392249F1E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8CEAD32-5CB1-4656-AAA1-E392249F1E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8CEAD32-5CB1-4656-AAA1-E392249F1E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8CEAD32-5CB1-4656-AAA1-E392249F1E71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
