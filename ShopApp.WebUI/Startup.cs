@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShopApp.Business.Abstract;
+using ShopApp.Business.Concrete;
+using ShopApp.DataAccess.Abstract;
+using ShopApp.DataAccess.Concrete.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +34,8 @@ namespace ShopApp.WebUI
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
+			services.AddScoped<IProductDal, MemoryProductDal>();
+			services.AddScoped<IProductService, ProductManager>();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
@@ -46,6 +52,7 @@ namespace ShopApp.WebUI
 				app.UseExceptionHandler("/Error");
 			}
 
+			app.UseMvcWithDefaultRoute();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
