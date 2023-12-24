@@ -1,21 +1,11 @@
 ﻿@model IEnumerable<ShopApp.Entities.Product>
 @{
-    Layout = null;
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
+@foreach(var x in Model)
+			{
+                <h1>@x.Name</h1>
+			}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    @foreach (var x in Model)
-    {
-        <p>
-            @x.Name
-        </p>
-    }
-</body>
-</html>

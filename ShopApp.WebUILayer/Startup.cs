@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
 using ShopApp.DataAccess.Abstract;
+using ShopApp.DataAccess.Concrete.EfCore;
 using ShopApp.DataAccess.Concrete.Memory;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,9 @@ namespace ShopApp.WebUILayer
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddScoped<IProductDal, MemoryProductDal>();
+			services.AddScoped<IProductDal, EfCoreProductDal>();
 			services.AddScoped<IProductService, ProductManager>();
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,15 +40,8 @@ namespace ShopApp.WebUILayer
 			{
 				app.UseDeveloperExceptionPage();
 			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-			}
 
-			app.UseStaticFiles();
-			app.UseCookiePolicy();
-
-			app.UseMvc();
+			app.UseMvcWithDefaultRoute();
 		}
 	}
 }
