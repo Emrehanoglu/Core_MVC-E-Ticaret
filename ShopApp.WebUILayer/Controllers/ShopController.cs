@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopApp.Business.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApp.WebUI.Controllers
+namespace ShopApp.WebUILayer.Controllers
 {
-	public class HomeController : Controller
+	public class ShopController : Controller
 	{
 		public IActionResult Index()
 		{

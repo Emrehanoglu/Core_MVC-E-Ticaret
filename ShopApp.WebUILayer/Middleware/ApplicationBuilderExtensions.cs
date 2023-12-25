@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopApp.WebUI.Middlewares
+namespace ShopApp.WebUILayer.Middlewares
 {
     public static class ApplicationBuilderExtensions
     {
