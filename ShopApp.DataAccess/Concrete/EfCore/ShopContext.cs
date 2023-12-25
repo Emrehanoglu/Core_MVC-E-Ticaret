@@ -16,7 +16,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 		{
 			modelBuilder.Entity<ProductCategory>().HasKey(c => new { c.CategoryId, c.ProductId });
 		}
-		DbSet<Product> Products { get; set; }
-		DbSet<Category> Categories { get; set; }
+		public DbSet<Product> Products { get; set; }
+		public DbSet<Category> Categories { get; set; }
 	}
 }

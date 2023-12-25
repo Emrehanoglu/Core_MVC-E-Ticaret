@@ -9,6 +9,7 @@ using ShopApp.Business.Concrete;
 using ShopApp.DataAccess.Abstract;
 using ShopApp.DataAccess.Concrete.EfCore;
 using ShopApp.DataAccess.Concrete.Memory;
+using ShopApp.WebUI.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +40,11 @@ namespace ShopApp.WebUILayer
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				SeedDatabase.Seed();
 			}
 
+			app.UseStaticFiles(); //wwwroot 'u dýþarýya açtým.
+			app.CustomStaticFiles(); //node_modules 'u burada dýþarý actým.
 			app.UseMvcWithDefaultRoute();
 		}
 	}

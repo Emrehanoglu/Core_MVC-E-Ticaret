@@ -10,7 +10,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 {
 	public class EfCoreProductDal : EfCoreGenericRepository<Product, ShopContext>, IProductDal
 	{
-		public IEnumerable<Product> GetPopularProducts()
+		public List<Product> GetPopularProducts()
 		{
 			throw new NotImplementedException();
 		}
