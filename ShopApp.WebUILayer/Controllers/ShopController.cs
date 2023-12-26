@@ -29,12 +29,16 @@ namespace ShopApp.WebUILayer.Controllers
 			{
 				return NotFound(); //Kullanıcıyı 404 sayfasına yonlendirdim
 			}
-			Product product = _productService.GetById((int)id);
+			Product product = _productService.GetProductDetails((int)id);
 			if(product == null)
 			{
 				return NotFound(); //Kullanıcıyı 404 sayfasına yonlendirdim
 			}
-			return View(product);
+			return View(new ProductDetailsModel()
+			{
+				Product = product,
+				Categories = product.ProductCategories.Select(i => i.Category).ToList()
+			}); ;
 		}
 	}
 }
