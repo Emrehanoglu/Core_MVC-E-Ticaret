@@ -12,7 +12,10 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 	{
 		public List<Product> GetPopularProducts()
 		{
-			throw new NotImplementedException();
+			using (var context = new ShopContext())
+			{
+				return context.Set<Product>().Where(x => x.Price > 13000).ToList();
+			}
 		}
 	}
 }

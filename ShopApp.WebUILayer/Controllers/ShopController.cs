@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Abstract;
+using ShopApp.WebUILayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,17 @@ namespace ShopApp.WebUILayer.Controllers
 {
 	public class ShopController : Controller
 	{
-		public IActionResult Index()
+		private IProductService _productService;
+		public ShopController(IProductService productService)
 		{
-			return View();
+			_productService = productService;
+		}
+		public IActionResult List()
+		{
+			return View(new ProductListModel()
+			{
+				Products = _productService.GetAll()
+			});
 		}
 	}
 }
