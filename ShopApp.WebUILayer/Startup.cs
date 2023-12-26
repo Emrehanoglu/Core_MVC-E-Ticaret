@@ -31,6 +31,8 @@ namespace ShopApp.WebUILayer
 		{
 			services.AddScoped<IProductDal, EfCoreProductDal>();
 			services.AddScoped<IProductService, ProductManager>();
+			services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
+			services.AddScoped<ICategoryService, CategoryManager>();
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 		}
 
@@ -45,7 +47,20 @@ namespace ShopApp.WebUILayer
 
 			app.UseStaticFiles(); //wwwroot 'u dýþarýya açtým.
 			app.CustomStaticFiles(); //node_modules 'u burada dýþarý actým.
-			app.UseMvcWithDefaultRoute();
+			
+			//app.UseMvcWithDefaultRoute();
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "products",
+					template: "products/{category?}",
+					defaults: new { controller="Shop", action="List"}
+				);
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=Home}/{action=Index}/{id?}"
+				);
+			});
 		}
 	}
 }
