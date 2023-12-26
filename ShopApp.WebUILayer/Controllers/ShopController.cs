@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
+using ShopApp.Entities;
 using ShopApp.WebUILayer.Models;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,19 @@ namespace ShopApp.WebUILayer.Controllers
 			{
 				Products = _productService.GetAll()
 			});
+		}
+		public IActionResult Details(int? id)
+		{
+			if(id == null)
+			{
+				return NotFound(); //Kullanıcıyı 404 sayfasına yonlendirdim
+			}
+			Product product = _productService.GetById((int)id);
+			if(product == null)
+			{
+				return NotFound(); //Kullanıcıyı 404 sayfasına yonlendirdim
+			}
+			return View(product);
 		}
 	}
 }
