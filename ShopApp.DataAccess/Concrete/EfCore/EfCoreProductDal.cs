@@ -27,5 +27,27 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 					.ThenInclude(i => i.Category).FirstOrDefault();
 			}
 		}
+
+		public List<Product> GetProductsByCategory(string category)
+		{
+			using (var context = new ShopContext())
+			{
+				var products = context.Products.AsQueryable();
+				//Queryable yaptım. henüz ToList() demiyorum.
+				//Sorgu hazır şekilde elimde şuan. product.ToList() diyerek kullanabilirim
+				//ya da sorguya yeni koşullar ekleyerek kullanabilirim.
+
+				//kategori bilgisi null ise tüm products listesi dönecek.
+				if (!string.IsNullOrEmpty(category))
+				{
+					//Gönderdiğim kategori bilgisine göre ürünler filtrelendi.
+					products = products.Include(i => i.ProductCategories)
+						.ThenInclude(i => i.Category)
+						.Where(i=>i.ProductCategories.Any(a=>a.Category.Name.ToLower() == category.ToLower()));
+					//ProductCategories.Any() ile true ya da false değer almış oldum.
+				}
+				return products.ToList();
+			}
+		}
 	}
 }
