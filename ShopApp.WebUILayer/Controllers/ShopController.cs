@@ -16,11 +16,13 @@ namespace ShopApp.WebUILayer.Controllers
 		{
 			_productService = productService;
 		}
-		public IActionResult List(string category)
+		// /products/telefon?page=3 --> 3.sayfa
+		public IActionResult List(string category, int page=1)
 		{
+			const int pageSize = 3; //1 sayfada gosterilecek ürün sayısı
 			return View(new ProductListModel()
 			{
-				Products = _productService.GetProductsByCategory(category)
+				Products = _productService.GetProductsByCategory(category, page, pageSize)
 			});
 		}
 		public IActionResult Details(int? id)

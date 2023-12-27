@@ -28,7 +28,7 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 			}
 		}
 
-		public List<Product> GetProductsByCategory(string category)
+		public List<Product> GetProductsByCategory(string category, int page, int pageSize)
 		{
 			using (var context = new ShopContext())
 			{
@@ -46,7 +46,10 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 						.Where(i=>i.ProductCategories.Any(a=>a.Category.Name.ToLower() == category.ToLower()));
 					//ProductCategories.Any() ile true ya da false değer almış oldum.
 				}
-				return products.ToList();
+				return products.Skip((page-1)*pageSize).Take(pageSize).ToList();
+				//page:1,pageSize=3 olsun, 1-1=0,0*3=0,Skip ile 0 tane ürünü geç,Take ile ilk 3 tane ürünü al
+				//page:2,pageSize=3 olsun, 2-1=1,1*3=3,Skip ile 3 tane ürünü geç,Take ile ikinci 3 tane ürünü al
+				//page:3,pageSize=3 olsun, 3-1=2,2*3=6,Skip ile 6 tane ürünü geç,Take ile üçüncü 3 tane ürünü al
 			}
 		}
 	}

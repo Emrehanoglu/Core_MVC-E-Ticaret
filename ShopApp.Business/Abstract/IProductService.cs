@@ -11,7 +11,7 @@ namespace ShopApp.Business.Abstract
 		Product GetProductDetails(int id);
 		List<Product> GetAll();
 		List<Product> GetPopularProducts();
-		List<Product> GetProductsByCategory(string category);
+		List<Product> GetProductsByCategory(string category, int page, int pageSize);
 		void Create(Product entity);
 		void Update(Product entity);
 		void Delete(Product entity);
