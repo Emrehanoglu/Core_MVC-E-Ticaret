@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Abstract;
+using ShopApp.Entities;
+using ShopApp.WebUILayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +11,33 @@ namespace ShopApp.WebUILayer.Controllers
 {
 	public class AdminController : Controller
 	{
+		private IProductService _productService;
+		public AdminController(IProductService productService)
+		{
+			_productService = productService;
+		}
+
 		public IActionResult Index()
 		{
 			return View();
+		}
+		[HttpGet]
+		public IActionResult CreateProduct()
+		{
+			return View();
+		}
+		[HttpPost]
+		public IActionResult CreateProduct(ProductModel model)
+		{
+			var entity = new Product()
+			{
+				Name = model.Name,
+				Price = model.Price,
+				Description = model.Description,
+				ImageUrl = model.ImageUrl
+			};
+			_productService.Create(entity);
+			return Redirect("Index");
 		}
 	}
 }
