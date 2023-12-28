@@ -37,6 +37,11 @@ namespace ShopApp.Business.Concrete
 			return _productDal.GetById(id);
 		}
 
+		public int GetCountByCategory(string category)
+		{
+			return _productDal.GetCountByCategory(category);
+		}
+
 		public List<Product> GetPopularProducts()
 		{
 			return _productDal.GetPopularProducts();

@@ -19,9 +19,16 @@ namespace ShopApp.WebUILayer.Controllers
 		// /products/telefon?page=3 --> 3.sayfa
 		public IActionResult List(string category, int page=1)
 		{
-			const int pageSize = 3; //1 sayfada gosterilecek ürün sayısı
+			const int pageSize = 3; //her sayfada gosterilecek ürün sayısı
 			return View(new ProductListModel()
 			{
+				PageInfo = new PageInfo()
+				{
+					TotalItems = _productService.GetCountByCategory(category),
+					CurrentPage = page,
+					CurrentCategory = category,
+					ItemsPerPage = pageSize
+				},
 				Products = _productService.GetProductsByCategory(category, page, pageSize)
 			});
 		}
