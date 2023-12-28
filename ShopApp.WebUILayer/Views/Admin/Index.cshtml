@@ -1,0 +1,48 @@
+﻿@model ProductListModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>Admin Products</h1>
+<hr />
+
+@if (Model.Products.Count() > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td style="width:30px">Id</td>
+                <td style="width:100px">Image</td>
+                <td>Name</td>
+                <td style="width:10px">Price</td>
+                <td style="width:200px"></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        <img src="~/img/@item.ImageUrl"width="80" /> 
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <a href="/Admin/Product/@item.Id" class="btn btn-primary mr-2">Edit</a>
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">
+        <h4>Not Any Product Here!</h4>
+    </div>
+}
+

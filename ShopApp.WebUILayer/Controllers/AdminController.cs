@@ -19,7 +19,10 @@ namespace ShopApp.WebUILayer.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return View(new ProductListModel() 
+			{
+				Products = _productService.GetAll()
+			});
 		}
 		[HttpGet]
 		public IActionResult CreateProduct()
