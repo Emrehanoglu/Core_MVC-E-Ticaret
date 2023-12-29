@@ -12,9 +12,11 @@ namespace ShopApp.WebUILayer.Controllers
 	public class AdminController : Controller
 	{
 		private IProductService _productService;
-		public AdminController(IProductService productService)
+		private ICategoryService _categoryService;
+		public AdminController(IProductService productService, ICategoryService categoryService)
 		{
 			_productService = productService;
+			_categoryService = categoryService;
 		}
 
 		public IActionResult Index()
@@ -88,6 +90,65 @@ namespace ShopApp.WebUILayer.Controllers
 				_productService.Delete(entity);
 			}
 			return Redirect("Index");
+		}
+		public IActionResult CategoryList()
+		{
+			return View(new CategoryListModel()
+			{
+				Categories = _categoryService.GetAll()
+			});
+		}
+		[HttpGet]
+		public IActionResult CreateCategory()
+		{
+			return View();
+		}
+		[HttpPost]
+		public IActionResult CreateCategory(CategoryModel model)
+		{
+			var entity = new Category()
+			{
+				Name = model.Name
+			};
+			_categoryService.Create(entity);
+			return Redirect("/Admin/CategoryList");
+		}
+		[HttpGet]
+		public IActionResult EditCategory(int id)
+		{
+			var entity = _categoryService.GetById(id);
+			if(entity == null)
+			{
+				return NotFound();
+			}
+			return View(new CategoryModel() 
+			{
+				Id = entity.Id,
+				Name = entity.Name
+			});
+		}
+		[HttpPost]
+		public IActionResult EditCategory(CategoryModel model)
+		{
+			var entity = _categoryService.GetById(model.Id);
+			if (entity == null)
+			{
+				return NotFound();
+			}
+			entity.Name = model.Name;
+			_categoryService.Update(entity);
+			return Redirect("/Admin/CategoryList");
+		}
+		[HttpPost]
+		public IActionResult DeleteCategory(int categoryId)
+		{
+			var entity = _categoryService.GetById(categoryId);
+			if (entity == null)
+			{
+				return NotFound();
+			}
+			_categoryService.Delete(entity);
+			return Redirect("/Admin/CategoryList");
 		}
 	}
 }
