@@ -1,0 +1,46 @@
+﻿@model ProductModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit Product</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-controller="Admin" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <div class="form-group row">
+                <label asp-for="Name" class="col-md-2 col-form-label">Product</label>
+                <div class="col-md-10">
+                    <input asp-for="Name" class="form-control" value="@Model.Name" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ImageUrl" class="col-md-2 col-form-label">Image Url</label>
+                <div class="col-md-10">
+                    <input asp-for="ImageUrl" class="form-control" value="@Model.ImageUrl" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Description" class="col-md-2 col-form-label">Description</label>
+                <div class="col-md-10">
+                    <textarea asp-for="Description" id="editor" class="form-control">@Model.Description</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Price" class="col-md-2 col-form-label">Price</label>
+                <div class="col-md-10">
+                    <input asp-for="Price" class="form-control" value="@Model.Price" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-10 offset-md-2">
+                    <button type="submit" class="btn btn-success">Save Product</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
