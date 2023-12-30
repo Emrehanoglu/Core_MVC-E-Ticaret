@@ -51,7 +51,7 @@ namespace ShopApp.WebUILayer.Controllers
 			{
 				return NotFound();
 			}
-			var entity = _productService.GetById((int)id);
+			var entity = _productService.GetByIdWithCategories((int)id);
 			if (entity == null)
 			{
 				return NotFound();
@@ -62,8 +62,12 @@ namespace ShopApp.WebUILayer.Controllers
 				Name = entity.Name,
 				Price = entity.Price,
 				Description = entity.Description,
-				ImageUrl = entity.ImageUrl
+				ImageUrl = entity.ImageUrl,
+				SelectedCategories = entity.ProductCategories.Select(x => x.Category).ToList()
+				//SelectedCategories ilgili ürünün olduğu kategoriler
 			};
+			ViewBag.Categories = _categoryService.GetAll();
+			//Tüm kategoriler
 			return View(model);
 		}
 		[HttpPost]

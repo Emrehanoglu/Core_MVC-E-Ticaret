@@ -12,6 +12,7 @@ namespace ShopApp.DataAccess.Abstract
 		List<Product> GetPopularProducts();
 		List<Product> GetProductsByCategory(string category, int page, int pageSize);
 		Product GetProductDetails(int id);
+		Product GetByIdWithCategories(int id);
 		int GetCountByCategory(string category);
 	}
 }
