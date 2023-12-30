@@ -151,5 +151,11 @@ namespace ShopApp.WebUILayer.Controllers
 			_categoryService.Delete(entity);
 			return Redirect("/Admin/CategoryList");
 		}
+		[HttpPost]
+		public IActionResult DeleteFromCategory(int categoryId,int productId)
+		{
+			_categoryService.DeleteFromCategory(categoryId,productId);
+			return Redirect("/Admin/EditCategory/"+categoryId);
+		}
 	}
 }
