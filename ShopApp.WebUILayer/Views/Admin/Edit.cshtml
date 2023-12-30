@@ -45,7 +45,10 @@
             @foreach (var item in (List<Category>)ViewBag.Categories)
             {
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="category@(item.Id)" @(Model.SelectedCategories.Any(x=>x.Id==item.Id)?"checked":"")>
+                    <input class="form-check-input" type="checkbox" id="category@(item.Id)" 
+                           @(Model.SelectedCategories.Any(x=>x.Id==item.Id)?"checked":"")
+                           name="categoryIds"
+                           value="@item.Id">
                     <label class="form-check-label" for="category@(item.Id)">
                         @item.Name
                     </label>

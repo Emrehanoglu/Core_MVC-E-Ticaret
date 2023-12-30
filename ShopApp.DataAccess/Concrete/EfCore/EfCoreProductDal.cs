@@ -75,5 +75,26 @@ namespace ShopApp.DataAccess.Concrete.EfCore
 				//page:3,pageSize=3 olsun, 3-1=2,2*3=6,Skip ile 6 tane ürünü geç,Take ile üçüncü 3 tane ürünü al
 			}
 		}
+
+		public void UpdateWithCategories(Product entity, int[] categoryIds)
+		{
+			using (var context = new ShopContext())
+			{
+				var product = context.Products.Include(x => x.ProductCategories).FirstOrDefault(x => x.Id == entity.Id);
+				if(product != null)
+				{
+					product.Name = entity.Name;
+					product.Price = entity.Price;
+					product.ImageUrl = entity.ImageUrl;
+					product.Description = entity.Description;
+					product.ProductCategories = categoryIds.Select(x => new ProductCategory()
+					{
+						CategoryId = x,
+						ProductId = entity.Id
+					}).ToList();
+					context.SaveChanges();
+				}
+			}
+		}
 	}
 }

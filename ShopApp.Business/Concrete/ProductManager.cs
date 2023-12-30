@@ -66,5 +66,10 @@ namespace ShopApp.Business.Concrete
 		{
 			_productDal.Update(entity);
 		}
+
+		public void UpdateWithCategories(Product entity, int[] categoryIds)
+		{
+			_productDal.UpdateWithCategories(entity, categoryIds);
+		}
 	}
 }
