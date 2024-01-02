@@ -43,8 +43,13 @@ namespace ShopApp.WebUILayer.Controllers
 					Description = model.Description,
 					ImageUrl = model.ImageUrl
 				};
-				_productService.Create(entity);
-				return Redirect("Index");
+
+				if (_productService.Create(entity))
+				{
+					return Redirect("Index");
+				}
+				ViewBag.ErrorMessage = _productService.ErrorMessage;
+				return View(model);
 			}
 
 			return View(model);			
