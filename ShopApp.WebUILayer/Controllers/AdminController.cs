@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
 using ShopApp.Entities;
 using ShopApp.WebUILayer.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -81,19 +83,36 @@ namespace ShopApp.WebUILayer.Controllers
 			return View(model);
 		}
 		[HttpPost]
-		public IActionResult Edit(ProductModel model, int[] categoryIds)
+		public async Task<IActionResult> Edit(ProductModel model, int[] categoryIds, IFormFile file)
 		{
-			var entity = _productService.GetById(model.Id);
-			if (entity == null)
+			if (ModelState.IsValid)
 			{
-				return NotFound();
+				var entity = _productService.GetById(model.Id);
+				if (entity == null)
+				{
+					return NotFound();
+				}
+				entity.Name = model.Name;
+				entity.Description = model.Description;
+				entity.Price = model.Price;
+
+				//File Upload
+				if(file != null)
+				{
+					entity.ImageUrl = file.FileName;
+					var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", file.FileName);
+					using (var stream = new FileStream(path, FileMode.Create))
+					{
+						await file.CopyToAsync(stream);
+					}
+				}
+
+				_productService.UpdateWithCategories(entity,categoryIds);
+				return Redirect("/Admin/Products");
 			}
-			entity.Name = model.Name;
-			entity.Description = model.Description;
-			entity.ImageUrl = model.ImageUrl;
-			entity.Price = model.Price;
-			_productService.UpdateWithCategories(entity,categoryIds);
-			return Redirect("/Admin/Products");
+			ViewBag.Categories = _categoryService.GetAll();
+			//Tüm kategoriler
+			return View(model);
 		}
 		[HttpPost]
 		public IActionResult Delete(int productId)
