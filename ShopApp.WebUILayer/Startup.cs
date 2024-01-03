@@ -56,7 +56,7 @@ namespace ShopApp.WebUILayer
 
 				options.User.RequireUniqueEmail = true; //ayný mail adresi ile baþka üyelik oluþturmaz
 
-				options.SignIn.RequireConfirmedEmail = true; //kullanýcýnýn login olabilmesi için mail onayýný þart tutar
+				options.SignIn.RequireConfirmedEmail = false; //kullanýcýnýn login olabilmesi için mail onayýný þart tutmaz
 				options.SignIn.RequireConfirmedPhoneNumber = false; //kullanýcýnýn login olabilmesi için telefon onayýný þart tutmaz
 			});
 
