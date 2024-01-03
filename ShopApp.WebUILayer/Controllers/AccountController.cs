@@ -49,36 +49,34 @@ namespace ShopApp.WebUILayer.Controllers
 
 			return View(model);
 		}
-		public IActionResult Login()
+		public IActionResult Login(string ReturnUrl=null)
 		{
-			return View(new LoginModel());
+			return View(new LoginModel() { 
+				ReturnUrl = ReturnUrl
+			});
 		}
 		[HttpPost]
-		public async Task<IActionResult> Login(LoginModel model, string returnUrl=null)
+		public async Task<IActionResult> Login(LoginModel model)
 		{
-			returnUrl = returnUrl ?? "/Home/Index";
-			//kullanıcı, yetkisi olmayan bir sayfaya giderse returnUrl içi dolu gelecek, 
-			//eğer null gelirse /Home/Index 'e gidecek
-
 			if (!ModelState.IsValid)
 			{
 				return View(model);
 			}
 
-			var user = await _userManager.FindByNameAsync(model.UserName);
+			var user = await _userManager.FindByEmailAsync(model.Email);
 			if(user == null)
 			{
-				ModelState.AddModelError("", "Hatalı Kullanıcı Girişi");
+				ModelState.AddModelError("", "Hatalı Email Bilgisi");
 				return View(model);
 			}
 
-			var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password,false,false);
+			var result = await _signInManager.PasswordSignInAsync(user, model.Password,false,false);
 			//ilk false, tarayıcı kapandığında login olan kullanıcı bilgileri kalmasın anlamına gelir
 			//ikinci false, kullanıcı startup içerisinde belirtilen 5 adet yanlıs giriş sonrası kitlenmeyecej
 
 			if (result.Succeeded)
 			{
-				return Redirect(returnUrl);
+				return Redirect(model.ReturnUrl ?? "/Home/Index");
 			}
 
 			return View(model);
