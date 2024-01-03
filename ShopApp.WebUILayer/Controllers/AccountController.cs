@@ -21,7 +21,7 @@ namespace ShopApp.WebUILayer.Controllers
 
 		public IActionResult Register()
 		{
-			return View();
+			return View(new RegisterModel());
 		}
 
 		[HttpPost]
@@ -44,6 +44,8 @@ namespace ShopApp.WebUILayer.Controllers
 			{
 				return RedirectToAction("Account", "Login");
 			}
+
+			ModelState.AddModelError("", "Yanlış giriş gercekleştirildi, lütfen kontrol ediniz");
 
 			return View(model);
 		}
