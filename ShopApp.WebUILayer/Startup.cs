@@ -40,6 +40,40 @@ namespace ShopApp.WebUILayer
 																  //IdentityRole sýnýfýnda kullanacaðým içim ikinci parametre olarak verdim
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>() //Datalarýn nerede saklanacaðýný belirttik
 				.AddDefaultTokenProviders(); //Þifre deðiþtirme, mail deðiþtirme gibi iþlemlerde benzersiz bir token göndermek için kullanýlýr
+
+			services.Configure<IdentityOptions>(options =>
+			{
+				//password
+				options.Password.RequireDigit = true; //parola içerisinde sayý olmalý
+				options.Password.RequireLowercase = true; //parola içerisinde küçük harf olmalý
+				options.Password.RequiredLength = 6; //minimum 6 karakterlik bir parola olacak
+				options.Password.RequireNonAlphanumeric = true; //Alphanumeric bir karakter olmak zorunda deðil
+				options.Password.RequireUppercase = true; //parola içerisinde büyük harf olmalý
+				
+				options.Lockout.MaxFailedAccessAttempts = 5; //kullanýcý 5 defa yanlýs giriþ yapabilir
+				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); //5 yanlýs giriþten sonra kulalnýcý 5dk kitlendi
+				options.Lockout.AllowedForNewUsers = true; //kilitleme iþlemi yeni kullanýcý için de geçerli olacak
+
+				options.User.RequireUniqueEmail = true; //ayný mail adresi ile baþka üyelik oluþturmaz
+
+				options.SignIn.RequireConfirmedEmail = true; //kullanýcýnýn login olabilmesi için mail onayýný þart tutar
+				options.SignIn.RequireConfirmedPhoneNumber = false; //kullanýcýnýn login olabilmesi için telefon onayýný þart tutmaz
+			});
+
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = "/account/login"; //kullanýcý giriþ yaparkenki controller/action hedefi
+				options.LogoutPath = "/account/logout"; //kullanýcý çýkýþ yaparkenki controller/action hedefi
+				options.AccessDeniedPath = "/account/accessdenied"; //kullanýcý yetkisi olmayan bir yere girdiði zamanki controller/action hedefi
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(60); //tarayýcý üzerinde 60dk boyunca cookie saklanýr
+				options.SlidingExpiration = true; //kullanýcýnýn hareketsiz kalma süresi ne ise tekrar sýfýrlanýr ve tekrar login olma iþlemi istenmez
+				options.Cookie = new CookieBuilder
+				{
+					HttpOnly = true, 
+					Name = ".ShopApp.Security.Cookie"
+				};
+			});
+			
 			//IdentityConnection end
 
 			services.AddScoped<IProductDal, EfCoreProductDal>();
