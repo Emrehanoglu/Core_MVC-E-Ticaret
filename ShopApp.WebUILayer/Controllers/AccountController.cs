@@ -49,5 +49,39 @@ namespace ShopApp.WebUILayer.Controllers
 
 			return View(model);
 		}
+		public IActionResult Login()
+		{
+			return View(new LoginModel());
+		}
+		[HttpPost]
+		public async Task<IActionResult> Login(LoginModel model, string returnUrl=null)
+		{
+			returnUrl = returnUrl ?? "/Home/Index";
+			//kullanıcı, yetkisi olmayan bir sayfaya giderse returnUrl içi dolu gelecek, 
+			//eğer null gelirse /Home/Index 'e gidecek
+
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			var user = await _userManager.FindByNameAsync(model.UserName);
+			if(user == null)
+			{
+				ModelState.AddModelError("", "Hatalı Kullanıcı Girişi");
+				return View(model);
+			}
+
+			var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password,false,false);
+			//ilk false, tarayıcı kapandığında login olan kullanıcı bilgileri kalmasın anlamına gelir
+			//ikinci false, kullanıcı startup içerisinde belirtilen 5 adet yanlıs giriş sonrası kitlenmeyecej
+
+			if (result.Succeeded)
+			{
+				return Redirect(returnUrl);
+			}
+
+			return View(model);
+		}
 	}
 }
