@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using ShopApp.WebUILayer.Extensions;
 using ShopApp.WebUILayer.Identity;
 using ShopApp.WebUILayer.Models;
 using System;
@@ -22,6 +23,11 @@ namespace ShopApp.WebUILayer.Controllers
 
 		public IActionResult Register()
 		{
+			TempData.Put("message", new ResultMessage()
+			{
+				Message = "Hoşgeldiniz.",
+				Css = "success"
+			});
 			return View(new RegisterModel());
 		}
 
@@ -30,6 +36,11 @@ namespace ShopApp.WebUILayer.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
+				TempData.Put("message", new ResultMessage()
+				{
+					Message = "Hatalı İşlem.",
+					Css = "danger"
+				});
 				return View(model);
 			}
 
@@ -93,13 +104,24 @@ namespace ShopApp.WebUILayer.Controllers
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();
+
+			TempData.Put("message", new ResultMessage()
+			{
+				Message = "Oturumunuz Sonlandırılmıştır.",
+				Css = "warning"
+			});
+
 			return Redirect("/Home/Index");
 		}
 		public async Task<IActionResult> ConfirmEmail(string userId, string token)
 		{
 			if (userId==null || token == null)
 			{
-				TempData["messages"] = "Geçersiz Token Bilgisi!";
+				TempData.Put("message", new ResultMessage()
+				{
+					Message = "Geçersiz Token Bilgisi!",
+					Css = "danger"
+				});
 				return View();
 			}
 
@@ -113,11 +135,19 @@ namespace ShopApp.WebUILayer.Controllers
 			var result = await _userManager.ConfirmEmailAsync(user, token);
 			if (result.Succeeded)
 			{
-				TempData["messages"] = "Hesabınız Onaylandı.";
+				TempData.Put("message", new ResultMessage()
+				{
+					Message = "Hesabınız Başarıyla Onaylanmıştır.",
+					Css = "success"
+				});
 				return View();
 			}
 
-			TempData["messages"] = "Onaylanmamış Hesap!";
+			TempData.Put("message", new ResultMessage()
+			{
+				Message = "Onaylanmamış Hesap!",
+				Css = "success"
+			});
 			return View();
 		}
 		public IActionResult ForgotPassword()
@@ -127,14 +157,24 @@ namespace ShopApp.WebUILayer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ForgotPassword(string email)
 		{
-			if(email == null)
+			if(string.IsNullOrEmpty(email))
 			{
+				TempData.Put("message", new ResultMessage()
+				{
+					Message = "Email alanı boş bırakılamaz!",
+					Css = "danger"
+				});
 				return View();
 			}
 
 			var user = await _userManager.FindByEmailAsync(email);
 			if(user == null)
 			{
+				TempData.Put("message", new ResultMessage()
+				{
+					Message = "Bu Email ile bir hesap yoktur!",
+					Css = "danger"
+				});
 				return View();
 			}
 
