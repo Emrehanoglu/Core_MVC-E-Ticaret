@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.WebUILayer.Identity;
 using ShopApp.WebUILayer.Models;
@@ -42,7 +43,15 @@ namespace ShopApp.WebUILayer.Controllers
 			var result = await _userManager.CreateAsync(user, model.Password);
 			if (result.Succeeded)
 			{
-				return RedirectToAction("Account", "Login");
+				//generate token
+				var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+				var callbackUrl = Url.Action("ConfirmEmail", "Account", new
+				{
+					userId = user.Id,
+					token = code
+				});
+
+				return Redirect(callbackUrl);
 			}
 
 			ModelState.AddModelError("", "Yanlış giriş gercekleştirildi, lütfen kontrol ediniz");
@@ -80,6 +89,67 @@ namespace ShopApp.WebUILayer.Controllers
 			}
 
 			return View(model);
+		}
+		public async Task<IActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync();
+			return Redirect("/Home/Index");
+		}
+		public async Task<IActionResult> ConfirmEmail(string userId, string token)
+		{
+			if (userId==null || token == null)
+			{
+				TempData["messages"] = "Geçersiz Token Bilgisi!";
+				return View();
+			}
+
+			var user = await _userManager.FindByIdAsync(userId);
+			if(user == null)
+			{
+				TempData["messages"] = "Böyle bir kullanıcı bulunmamaktadır.";
+				return View();
+			}
+
+			var result = await _userManager.ConfirmEmailAsync(user, token);
+			if (result.Succeeded)
+			{
+				TempData["messages"] = "Hesabınız Onaylandı.";
+				return View();
+			}
+
+			TempData["messages"] = "Onaylanmamış Hesap!";
+			return View();
+		}
+		public IActionResult ForgotPassword()
+		{
+			return View();
+		}
+		[HttpPost]
+		public async Task<IActionResult> ForgotPassword(string email)
+		{
+			if(email == null)
+			{
+				return View();
+			}
+
+			var user = await _userManager.FindByEmailAsync(email);
+			if(user == null)
+			{
+				return View();
+			}
+
+			var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+			var callbackUrl = Url.Action("ResetPassword", "Account", new
+			{
+				userId = user.Id,
+				token = code
+			});
+
+			return Redirect(callbackUrl);
+		}
+		public IActionResult ResetPassword()
+		{
+			return View();
 		}
 	}
 }

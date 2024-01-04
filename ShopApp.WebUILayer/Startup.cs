@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,7 @@ using ShopApp.Business.Abstract;
 using ShopApp.Business.Concrete;
 using ShopApp.DataAccess.Abstract;
 using ShopApp.DataAccess.Concrete.EfCore;
+using ShopApp.WebUILayer.EmailServices;
 using ShopApp.WebUILayer.Identity;
 //using ShopApp.DataAccess.Concrete.Memory;
 using ShopApp.WebUILayer.Middlewares;
@@ -69,8 +71,9 @@ namespace ShopApp.WebUILayer
 				options.SlidingExpiration = true; //kullanýcýnýn hareketsiz kalma süresi ne ise tekrar sýfýrlanýr ve tekrar login olma iþlemi istenmez
 				options.Cookie = new CookieBuilder
 				{
-					HttpOnly = true, 
-					Name = ".ShopApp.Security.Cookie"
+					HttpOnly = true,
+					Name = ".ShopApp.Security.Cookie",
+					SameSite = SameSiteMode.Strict
 				};
 			});
 			
@@ -80,6 +83,9 @@ namespace ShopApp.WebUILayer
 			services.AddScoped<IProductService, ProductManager>();
 			services.AddScoped<ICategoryDal, EfCoreCategoryDal>();
 			services.AddScoped<ICategoryService, CategoryManager>();
+
+			//services.AddTransient<IEmailSender, EmailSender>();
+
 			services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 		}
 
