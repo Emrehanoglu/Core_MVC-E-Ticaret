@@ -141,18 +141,19 @@ namespace ShopApp.WebUILayer.Controllers
 			var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 			var callbackUrl = Url.Action("ResetPassword", "Account", new
 			{
+				email = email,
 				token = code
 			});
 
 			return Redirect(callbackUrl);
 		}
-		public IActionResult ResetPassword(string token)
+		public IActionResult ResetPassword(string token, string email)
 		{
 			if(token == null)
 			{
 				return RedirectToAction("Index","Home");
 			}
-			var model = new ResetPasswordModel { Token = token };
+			var model = new ResetPasswordModel { Token = token, Email = email };
 			return View(model);
 		}
 		[HttpPost]
