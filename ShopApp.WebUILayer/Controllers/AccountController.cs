@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using ShopApp.Business.Abstract;
 using ShopApp.WebUILayer.Extensions;
 using ShopApp.WebUILayer.Identity;
 using ShopApp.WebUILayer.Models;
@@ -15,10 +16,12 @@ namespace ShopApp.WebUILayer.Controllers
 	{
 		private UserManager<ApplicationUser> _userManager;
 		private SignInManager<ApplicationUser> _signInManager;
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+		private ICartService _cartService;
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ICartService cartService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_cartService = cartService;
 		}
 
 		public IActionResult Register()
@@ -135,6 +138,9 @@ namespace ShopApp.WebUILayer.Controllers
 			var result = await _userManager.ConfirmEmailAsync(user, token);
 			if (result.Succeeded)
 			{
+				//create cart object
+				_cartService.InitializeCart(user.Id);
+
 				TempData.Put("message", new ResultMessage()
 				{
 					Message = "Hesabınız Başarıyla Onaylanmıştır.",
