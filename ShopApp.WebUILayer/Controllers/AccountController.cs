@@ -218,5 +218,9 @@ namespace ShopApp.WebUILayer.Controllers
 
 			return View(model);
 		}
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
 	}
 }

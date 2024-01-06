@@ -64,9 +64,9 @@ namespace ShopApp.WebUILayer
 
 			services.ConfigureApplicationCookie(options =>
 			{
-				options.LoginPath = "/account/login"; //kullanýcý giriþ yaparkenki controller/action hedefi
-				options.LogoutPath = "/account/logout"; //kullanýcý çýkýþ yaparkenki controller/action hedefi
-				options.AccessDeniedPath = "/account/accessdenied"; //kullanýcý yetkisi olmayan bir yere girdiði zamanki controller/action hedefi
+				options.LoginPath = "/Account/Login"; //kullanýcý giriþ yaparkenki controller/action hedefi
+				options.LogoutPath = "/Account/Logout"; //kullanýcý çýkýþ yaparkenki controller/action hedefi
+				options.AccessDeniedPath = "/Account/AccessDenied"; //kullanýcý yetkisi olmayan bir yere girdiði zamanki controller/action hedefi
 				options.ExpireTimeSpan = TimeSpan.FromMinutes(60); //tarayýcý üzerinde 60dk boyunca cookie saklanýr
 				options.SlidingExpiration = true; //kullanýcýnýn hareketsiz kalma süresi ne ise tekrar sýfýrlanýr ve tekrar login olma iþlemi istenmez
 				options.Cookie = new CookieBuilder
