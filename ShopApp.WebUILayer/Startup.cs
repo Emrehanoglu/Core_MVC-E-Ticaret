@@ -123,6 +123,11 @@ namespace ShopApp.WebUILayer
 					defaults: new { controller="Shop", action="List"}
 				);
 				routes.MapRoute(
+					name: "cart",
+					template: "cart",
+					defaults: new { controller = "Cart", action = "Index" }
+				);
+				routes.MapRoute(
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}"
 				);
