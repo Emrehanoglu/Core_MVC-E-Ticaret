@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.Business.Abstract;
 using ShopApp.WebUILayer.Identity;
+using ShopApp.WebUILayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,19 @@ namespace ShopApp.WebUILayer.Controllers
 		public IActionResult Index()
 		{
 			var cart = _cartService.GetCartByUserId(_userManager.GetUserId(User));
-			return View(cart);
+			return View(new CartModel()
+			{
+				CartId = cart.Id,
+				CartItems = cart.CartItems.Select(x => new CartItemModel()
+				{
+					CartItemId = x.Id,
+					ProductId = x.Product.Id,
+					ImageUrl = x.Product.ImageUrl,
+					Name = x.Product.Name,
+					Price = (decimal)x.Product.Price,
+					Quantity = x.Quantity
+				}).ToList()
+			});
 		}
 		[HttpPost]
 		public IActionResult AddToCart()
