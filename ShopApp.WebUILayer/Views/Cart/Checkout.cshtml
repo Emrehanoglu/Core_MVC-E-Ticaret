@@ -1,4 +1,4 @@
-﻿
+﻿@model OrderModel
 @{
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,35 +13,35 @@
         <form action="/" method="post">
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label>First Name</label>
-                    <input type="text" name="firstName" value="" class="form-control" />
+                    <label asp-for="@Model.FirstName"></label>
+                    <input asp-for="@Model.FirstName" value="" class="form-control" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label>Last Name</label>
-                    <input type="text" name="lastName" value="" class="form-control" />
+                    <label asp-for="@Model.LastName"></label>
+                    <input asp-for="@Model.LastName" value="" class="form-control" />
                 </div>
             </div>
             <div class="mb-3">
-                <label>Address</label>
-                <textarea name="address" class="form-control"></textarea>
+                <label asp-for="@Model.Address"></label>
+                <textarea asp-for="@Model.Address" class="form-control">@Model.Address</textarea>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label>City</label>
-                    <input type="text" name="city" value="" class="form-control" />
+                    <label asp-for="@Model.City"></label>
+                    <input asp-for="@Model.City" value="" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label>Phone</label>
-                    <input type="text" name="phone" value="" class="form-control" />
+                    <label asp-for="@Model.Phone"></label>
+                    <input asp-for="@Model.Phone" value="" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label>Email</label>
-                    <input type="text" name="email" value="" class="form-control" />
+                    <label asp-for="@Model.Email"></label>
+                    <input asp-for="@Model.Email" value="" class="form-control" />
                 </div>
             </div>
             <hr class="mb-4" />
             @*adres bilgisi kayıt edilsinmi şeklinde kullanıcıya sorulacak ve kayıt edilen adres
-        order sırasında selectDropDown 'dan secilebiliyor olacak*@
+                order sırasında selectDropDown 'dan secilebiliyor olacak*@
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="save-info">
                 <label class="custom-control-label" for="save-info">Save this information for next time</label>
@@ -62,26 +62,26 @@
             @*kredi kartı bilgilerini kullanıcıdan alalım*@
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label>Name on Credit Cart</label>
-                    <input type="text" name="cardName" value="" class="form-control" />
+                    <label asp-for="@Model.CardName"></label>
+                    <input asp-for="@Model.CardName" value="" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label>Credit Card Number</label>
-                    <input type="text" name="cardNumber" value="" class="form-control" />
+                    <label asp-for="@Model.CardNumber"></label>
+                    <input asp-for="@Model.CardNumber" value="" class="form-control" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label>Month</label>
-                    <input type="text" name="month" value="" class="form-control" />
+                    <label asp-for="@Model.ExpirationMonth"></label>
+                    <input asp-for="@Model.ExpirationMonth" value="" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label>Year</label>
-                    <input type="text" name="year" value="" class="form-control" />
+                    <label asp-for="@Model.ExpirationYear"></label>
+                    <input asp-for="@Model.ExpirationYear" value="" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                    <label>CVV</label>
-                    <input type="text" name="cvv" value="" class="form-control" />
+                    <label asp-for="@Model.Cvv"></label>
+                    <input asp-for="@Model.Cvv" value="" class="form-control" />
                 </div>
             </div>
             <h4 class="mb-3">Payment</h4>
@@ -93,23 +93,18 @@
             <span class="text-muted">Your Cart</span>
         </h4>
         <ul class="list-group mb-3">
+            @foreach (var item in Model.CartModel.CartItems)
+            {
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <h6 class="my-0">@item.Name <small>x @item.Quantity</small></h6>
+                    </div>
+                    <span class="text-muted">@item.Price ₺</span>
+                </li>
+            }
             <li class="list-group-item d-flex justify-content-between">
-                <div>
-                    <h6 class="my-0">Product Name</h6>
-                    <small class="text-muted">Description</small>
-                </div>
-                <span class="text-muted">1000 ₺</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-                <div>
-                    <h6 class="my-0">Product Name</h6>
-                    <small class="text-muted">Description</small>
-                </div>
-                <span class="text-muted">1000 ₺</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-                <span>Total (₺)</span>
-                <strong>2000 ₺</strong>
+                <strong>Total (₺)</strong>
+                <span>@Model.CartModel.TotalPrice() ₺</span>
             </li>
         </ul>
     </div>

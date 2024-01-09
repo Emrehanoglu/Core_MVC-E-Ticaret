@@ -53,7 +53,22 @@ namespace ShopApp.WebUILayer.Controllers
 		}
 		public IActionResult Checkout()
 		{
-			return View();
+			var cart = _cartService.GetCartByUserId(_userManager.GetUserId(User));
+			var order = new OrderModel();
+			order.CartModel = new CartModel()
+			{
+				CartId = cart.Id,
+				CartItems = cart.CartItems.Select(x => new CartItemModel()
+				{
+					CartItemId = x.Id,
+					ProductId = x.Product.Id,
+					ImageUrl = x.Product.ImageUrl,
+					Name = x.Product.Name,
+					Price = (decimal)x.Product.Price,
+					Quantity = x.Quantity
+				}).ToList()
+			};
+			return View(order);
 		}
 	}
 }
