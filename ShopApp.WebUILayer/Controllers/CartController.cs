@@ -106,7 +106,7 @@ namespace ShopApp.WebUILayer.Controllers
 				if (payment.Status == "success")
 				{
 					SaveOrder(model, payment, userId); //bu noktada sipariş kaydı oluşturulsun, başarılı ise veritabanına kaydedelim
-					//CleanCart(userId); // daha sonra sepeti temizleyelim
+					CleanCart(cart.Id.ToString()); // daha sonra sepeti temizleyelim
 					return View("Success");
 				}
 			}
@@ -144,9 +144,9 @@ namespace ShopApp.WebUILayer.Controllers
 			_orderService.Create(order);
 		}
 
-		private void CleanCart(string userId)
+		private void CleanCart(string cartId)
 		{
-			throw new NotImplementedException();
+			_cartService.ClearCart(cartId);
 		}
 
 		private Payment PaymentProcess(OrderModel model)
