@@ -6,10 +6,14 @@ namespace ShopApp.Entities
 {
 	public class Order
 	{
+		public Order()
+		{
+			OrderItems = new List<OrderItem>(); 
+		}
 		public int Id { get; set; }
 		public string OrderNumber { get; set; }
 		public DateTime OrderDate { get; set; }
-		public int UserId { get; set; }
+		public string UserId { get; set; }
 		public EnumOrderState OrderState { get; set; }
 		public EnumPaymentTypes PaymentTypes { get; set; }
 		public string FirstName { get; set; }
